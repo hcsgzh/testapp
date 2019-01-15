@@ -1,68 +1,61 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Situation:
 
-## Available Scripts
+I have a problem with react-router when I use "Route" with webpack and babel. React-Router only rendering the "/" route.
 
-In the project directory, you can run:
+## Problem
 
-### `npm start`
+The problem is React-Router rendering only "/" route, If I use webpack and babel to generate the bundle.js. But when I use "react-scripts start", React-Router will render properly.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+When I run the same code by using react-scripts start. The React-Router will render properly.  `npm start`
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+However, if I run the same code by using webpack --mode development and run the code. The React-Router will render only "/" route.  `npm run watch`
 
-### `npm test`
+## More details
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I think the problem is after the babel translated the JSX code and the result JS code is different when I use `react-scripts start` and `webpack --mode development`. 
 
-### `npm run build`
+React-scripts will translate the code correctly but the webpack will translate wrong. Hence, I guess the problem is from the bable. Maybe my babel did not configure properly. Could someone take a look in my .babelrc file? and please explain to me.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+{
+    "presets": [
+        "@babel/env", "@babel/react"
+    ],
+    "plugins": [
+        "@babel/plugin-proposal-class-properties"
+    ]
+}
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## The testapp
+There are three routes in the project. 
 
-### `npm run eject`
+> "/main" 
+> "/"
+> "about"
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+import React, { Component } from 'react';
+import { BrowserRouter,Route, Switch } from 'react-router-dom';
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export default class extends Component {
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  state = {}
+  render() {
+    return (<BrowserRouter>
+        <Switch>
+          <Route path="/main" render={ ()=><h2>Main</h2> }/>
+          <Route path="/" exact render={ ()=><h2>Home</h2> }/>
+          <Route path="/about" render={ ()=><h2>About</h2> }/>
+        </Switch>
+    </BrowserRouter>
+    );
+  }
+}
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
 
-## Learn More
+## Thanks
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+https://stackoverflow.com/questions/54193472/how-to-fix-react-router-only-rendering-the-route
