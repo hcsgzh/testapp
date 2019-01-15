@@ -32,7 +32,9 @@ React-scripts will translate the code correctly but the webpack will translate w
 There are three routes in the project. 
 
 > "/main" 
+
 > "/"
+
 > "about"
 
 ```
