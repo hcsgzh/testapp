@@ -163,3 +163,24 @@ export default class extends Component {
 ## Thanks
 
 https://stackoverflow.com/questions/54193472/how-to-fix-react-router-only-rendering-the-route
+
+# The End
+I figured out the problem. 
+
+Actually, It is not about React-Router or my babel configuration. It is because of the different routes that could not match the index.html file. This testapp project used reload to server the react app. The reload did not match every route to the index.html.
+
+## The solution 
+
+> Handles any requests that don't match the backend API to index.html
+
+For example,  if you use express as a backend for your react app, you would like to have the code below.
+```
+app.get('*', (req,res) =>{
+//make sure here is your production path if you deploy your app
+    res.sendFile(__dirname+'/public/index.html'); 
+});
+```
+With the code above, if I hit the route like "localhost:3000/main", I will get the content as I expected.
+Also for route "/" and "about", I  will get the right content.
+
+So, the "problem" is solved.
